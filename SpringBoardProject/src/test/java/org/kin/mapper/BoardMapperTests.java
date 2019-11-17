@@ -20,35 +20,35 @@ public class BoardMapperTests {
 	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
 
-	/*
-	 * @Test public void testGetList() {
-	 * 
-	 * mapper.getList().forEach(board -> log.info(board));
-	 * 
-	 * }
-	 * 
-	 * @Test public void testInsert() {
-	 * 
-	 * BoardVO board = new BoardVO(); board.setTitle("새로운 글");
-	 * board.setContent("내용입니다."); board.setWriter("user01"); mapper.insert(board);
-	 * 
-	 * log.info(board); }
-	 */
 	
-	/*
-	 * @Test public void testRead() {
-	 * 
-	 * BoardVO board = mapper.read(5L);
-	 * 
-	 * log.info(board);
-	 * 
-	 * }
-	 */
+	 @Test public void testGetList() {
+	 
+	 mapper.getList().forEach(board -> log.info(board));
+	 
+	 }
+	 
+	 @Test public void testInsert() {
+	 
+	 BoardVO board = new BoardVO(); board.setTitle("새로운 글");
+	 board.setContent("내용입니다."); board.setWriter("user01"); mapper.insert(board);
+	 
+	 log.info(board); }
+	 
 	
-	/*
-	 * @Test public void testDelete() { log.info("Delete Count : " +
-	 * mapper.delete(3L)); }
-	 */
+	
+	 @Test public void testRead() {
+	 
+	 BoardVO board = mapper.read(5L);
+	 
+	 log.info(board);
+	 
+	 }
+	 
+	
+	
+	 @Test public void testDelete() { log.info("Delete Count : " +
+	  mapper.delete(3L)); }
+	 
 	
 	@Test
 	public void testUpdate() {

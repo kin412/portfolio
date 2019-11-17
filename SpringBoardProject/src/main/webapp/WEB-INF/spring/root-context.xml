@@ -34,5 +34,6 @@
 	</bean>
 	
 	<mybatis-spring:scan base-package="org.kin.mapper"/>
+	<context:component-scan base-package="org.kin.service"/>
 	
 </beans>
