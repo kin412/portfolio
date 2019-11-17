@@ -24,6 +24,8 @@
 	<context:component-scan base-package="org.kin.controller" />
 	<context:component-scan base-package="org.kin.exception" />
 	
+	<!-- <resources location="/resources/" mapping="/resources/**"/> -->
+	
 	
 	
 </beans:beans>
