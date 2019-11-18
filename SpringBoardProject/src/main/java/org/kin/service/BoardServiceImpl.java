@@ -3,6 +3,7 @@ package org.kin.service;
 import java.util.List;
 
 import org.kin.domain.BoardVO;
+import org.kin.domain.Criteria;
 import org.kin.mapper.BoardMapper;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +43,15 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardVO> getList() {
-		log.info("getList.....");
-		return mapper.getList();
+	public List<BoardVO> getList(Criteria cri) {
+		log.info("getList with criteria: " + cri);
+		return mapper.getListWithPaging(cri);
+	}
+
+	@Override
+	public int getTotal(Criteria cri) {
+		log.info("get total count");
+		return mapper.getTotalCount(cri);
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kin.domain.BoardVO;
+import org.kin.domain.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -36,13 +37,10 @@ public class BoardServiceTest {
 	
 	
 	 @Test public void testGetList(){
-	 service.getList().forEach(board->log.info(board)); }
+	 service.getList(new Criteria(2, 10)).forEach(board->log.info(board)); }
 	 
-	
 	 @Test public void testGet() { service.get(64L); }
 	 
-	
-	
 	 @Test public void testDelete() { log.info("remove : " + service.remove(64L));
 	 }
 	 
