@@ -235,6 +235,17 @@
 	});
 	</script>
 	
+	<script>
+		$(document).ready(function(){
+			(function(){
+				var bno = '<c:out value="${board.bno}"/>';
+				$.getJSON("/board/getAttachList", {bno:bno}, function(arr){
+					console.log(arr);
+				});
+			})();
+		});
+	</script>
+	
 	<script type="text/javascript">
 	$(document).ready(function() {
 		console.log(replyService);

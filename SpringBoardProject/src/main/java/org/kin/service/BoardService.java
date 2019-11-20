@@ -2,6 +2,7 @@ package org.kin.service;
 
 import java.util.List;
 
+import org.kin.domain.BoardAttachVO;
 import org.kin.domain.BoardVO;
 import org.kin.domain.Criteria;
 
@@ -18,5 +19,7 @@ public interface BoardService {
 	public List<BoardVO> getList(Criteria cri);
 	
 	public int getTotal(Criteria cri);
+	
+	public List<BoardAttachVO> getAttachList(Long bno);
 	
 }

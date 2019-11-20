@@ -1,9 +1,15 @@
 package org.kin.controller;
 
+import java.util.List;
+
+import org.kin.domain.BoardAttachVO;
 import org.kin.domain.BoardVO;
 import org.kin.domain.Criteria;
 import org.kin.domain.PageDTO;
 import org.kin.service.BoardService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.AllArgsConstructor;
@@ -41,9 +48,19 @@ public class BoardController {
 	
 	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
+		
+		log.info("====================");
 		log.info("register : " + board);
+		
+		if(board.getAttachList() != null) {
+			board.getAttachList().forEach(attach -> log.info(attach));
+		}
+		
+		log.info("====================");
+		
 		service.register(board);
 		rttr.addFlashAttribute("result", board.getBno());
+		
 		return "redirect:/board/list";
 	}
 	
@@ -81,6 +98,14 @@ public class BoardController {
 		rttr.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:/board/list";
+	}
+	
+	@GetMapping(value="/getAttachList",
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<BoardAttachVO>> getAttachList(Long bno){
+		log.info("getAttachList" + bno);
+		return new ResponseEntity<>(service.getAttachList(bno), HttpStatus.OK);
 	}
 	
 }

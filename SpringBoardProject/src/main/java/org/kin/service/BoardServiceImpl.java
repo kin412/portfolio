@@ -2,26 +2,44 @@ package org.kin.service;
 
 import java.util.List;
 
+import org.kin.domain.BoardAttachVO;
 import org.kin.domain.BoardVO;
 import org.kin.domain.Criteria;
+import org.kin.mapper.BoardAttachMapper;
 import org.kin.mapper.BoardMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 
+@Transactional
 @Log4j
 @Service
-@AllArgsConstructor
 public class BoardServiceImpl implements BoardService {
 	
+	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
+	
+	@Setter(onMethod_ = @Autowired)
+	private BoardAttachMapper attachMapper;
 
 	@Override
 	public void register(BoardVO board) {
 		log.info("register ......" + board);
 		mapper.insertSelectKey(board);
+		
+		if(board.getAttachList() == null || board.getAttachList().size() <= 0) {
+			return;
+		}
+		
+		board.getAttachList().forEach(attach ->{
+			attach.setBno(board.getBno());
+			attachMapper.insert(attach);
+		});
 	}
 
 	@Override
@@ -52,6 +70,12 @@ public class BoardServiceImpl implements BoardService {
 	public int getTotal(Criteria cri) {
 		log.info("get total count");
 		return mapper.getTotalCount(cri);
+	}
+
+	@Override
+	public List<BoardAttachVO> getAttachList(Long bno) {
+		log.info("get Attach list by bno" + bno);
+		return attachMapper.findByBno(bno);
 	}
 
 }
