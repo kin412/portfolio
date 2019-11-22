@@ -1,35 +1,72 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>로그인 페이지</h1>
-	<h2><c:out value="${error }"/></h2>
-	<h2><c:out value="${logout }"/></h2>
-	
-	<form action="/login" method='post'>
-		<div>
-			<input type='text' name='username'>
-		</div>
-		<div>
-			<input type='password' name='password'>
-		</div>
-		<div>
-			<div>
-				<input type="checkbox" name='remember-me'> 자동로그인
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<div class="login-panel panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Please Sign In</h3>
+					</div>
+					<div class="panel-body">
+						<form role="form" method='post' action="/login">
+							<fieldset>
+								<div class="form-group">
+									<input class="form-control" placeholder="userid"
+										name="username" type="text" autofocus>
+								</div>
+								<div class="form-group">
+									<input class="form-control" placeholder="Password"
+										name="password" type="password" value="">
+								</div>
+								<div class="checkbox">
+									<label> <input name="remember-me" type="checkbox">Remember
+										Me
+									</label>
+								</div>
+								<!-- Change this to a button or input when using this as a form -->
+								<!-- <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a> -->
+								<input type="submit" class="btn btn-lg btn-success btn-block" value="로그인">
+							</fieldset>
+							<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
+						</form>
+
+					</div>
+				</div>
 			</div>
-		
-		<div>
-			<input type='submit'>
 		</div>
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	</form>
-	
+	</div>
+  <script>
+  $(".btn-success").on("click", function(e){
+    e.preventDefault();
+    $("form").submit();
+  });
+  </script>
+  
+<c:if test="${param.logout != null}">
+      <script>
+	      $(document).ready(function(){
+	      	alert("로그아웃하였습니다.");
+	      });
+      </script>
+</c:if>  
+
 </body>
 </html>

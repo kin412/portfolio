@@ -37,10 +37,12 @@ var replyService= (function(){
 		});
 	}
 	
-	function remove(rno, callback, error){
-		$ajax({
+	function remove(rno, replyer, callback, error){
+		$.ajax({
 			type:'delete',
-			url:'/replies' + rno,
+			url:'/replies/' + rno,
+			data: JSON.stringify({rno:rno, replyer:replyer}),
+			contentType: "application/json; charset=utf-8",
 			success:function(deleteResult, status, xhr){
 				if(callback){
 					callback(deleteResult);
@@ -57,7 +59,7 @@ var replyService= (function(){
 	function update(reply, callback, error){
 		console.log("RNO:" + reply.rno);
 		
-		$sjax({
+		$.ajax({
 			type:'put',
 			url:'/replies/' + reply.rno,
 			data:JSON.stringify(reply),

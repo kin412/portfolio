@@ -10,9 +10,11 @@ import org.kin.domain.BoardVO;
 import org.kin.domain.Criteria;
 import org.kin.domain.PageDTO;
 import org.kin.service.BoardService;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,11 +47,13 @@ public class BoardController {
 	}
 	
 	@GetMapping("/register")
+	@PreAuthorize("isAuthenticated()")
 	public void register(){
 		
 	}
 	
 	@PostMapping("/register")
+	@PreAuthorize("isAuthenticated()")
 	public String register(BoardVO board, RedirectAttributes rttr) {
 		
 		log.info("====================");
@@ -73,6 +77,7 @@ public class BoardController {
 		model.addAttribute("board",service.get(bno));
 	}
 	
+	@PreAuthorize("principal.username == #board.writer")
 	@PostMapping("/modify")
 	public String modify(BoardVO board, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		log.info("modify : " + board);
@@ -80,16 +85,18 @@ public class BoardController {
 			rttr.addFlashAttribute("result", "success");
 		}
 		
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
-		rttr.addAttribute("type", cri.getType());
-		rttr.addAttribute("keyword", cri.getKeyword());
+		/*
+		 * rttr.addAttribute("pageNum", cri.getPageNum()); rttr.addAttribute("amount",
+		 * cri.getAmount()); rttr.addAttribute("type", cri.getType());
+		 * rttr.addAttribute("keyword", cri.getKeyword());
+		 */
 		
-		return "redirect:/board/list";
+		return "redirect:/board/list" + cri.getListLink();
 	}
 	
+	@PreAuthorize("principal.username == #writer")
 	@PostMapping("/remove")
-	public String remove(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri , RedirectAttributes rttr) {
+	public String remove(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri , RedirectAttributes rttr, String writer) {
 		log.info("remove : " + bno);
 		
 		List<BoardAttachVO> attachList = service.getAttachList(bno);
@@ -99,12 +106,13 @@ public class BoardController {
 			rttr.addFlashAttribute("result", "success");
 		}
 		
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
-		rttr.addAttribute("type", cri.getType());
-		rttr.addAttribute("keyword", cri.getKeyword());
+		/*
+		 * rttr.addAttribute("pageNum", cri.getPageNum()); rttr.addAttribute("amount",
+		 * cri.getAmount()); rttr.addAttribute("type", cri.getType());
+		 * rttr.addAttribute("keyword", cri.getKeyword());
+		 */
 		
-		return "redirect:/board/list";
+		return "redirect:/board/list" + cri.getListLink();
 	}
 	
 	@GetMapping(value="/getAttachList",

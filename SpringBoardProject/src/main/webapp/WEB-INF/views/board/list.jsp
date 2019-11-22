@@ -17,6 +17,7 @@
 	<title>list</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/header.jsp"/>
 	<div align="center">list</div>
 	<table align="center">
 		<thead>

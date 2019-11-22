@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,12 +58,19 @@
 				value='<fmt:formatDate pattern="yyyy/MM/dd"
 				value="${board.updateDate}"/>' readonly="readonly">
 			</div>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
 			<input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/>'>
 			<input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
 			<input type='hidden' name='type' value='<c:out value="${cri.type }"/>'>
 			<input type='hidden' name='keyword' value='<c:out value="${cri.keyword }"/>'>
+			
+			<sec:authentication property="principal" var="pinfo"/>
+			<sec:authorize access="isAuthenticated()">
+				<c:if test="${pinfo.username eq board.writer}">
 			<button type='submit' data-oper='modify' class="btn btn-default">글 수정</button>
 			<button type='submit' data-oper='remove' class="btn btn-default">글 삭제</button>
+				</c:if>
+			</sec:authorize>
 			<button type='submit' data-oper='list' class="btn btn-default">글 목록</button>
 		</div>
 	</form>
@@ -211,6 +219,9 @@
 		    return true;
 		  }
 		  
+		  var csrfHeaderName ="${_csrf.headerName}"; 
+		  var csrfTokenValue="${_csrf.token}";
+		  
 		  $("input[type='file']").change(function(e){
 
 		    var formData = new FormData();
@@ -229,14 +240,17 @@
 		    }
 		    
 		    $.ajax({
-		      url: '/uploadAjaxAction',
-		      processData: false, 
-		      contentType: false,data: 
-		      formData,type: 'POST',
-		      dataType:'json',
-		        success: function(result){
-		          console.log(result); 
-				  showUploadResult(result); //업로드 결과 처리 함수 
+		    	 url: '/uploadAjaxAction',
+		         processData: false, 
+		         contentType: false,data: 
+		         formData,type: 'POST',
+		         beforeSend: function(xhr) {
+		             xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+		         },
+		         dataType:'json',
+		           success: function(result){
+		             console.log(result); 
+		   		  showUploadResult(result);
 
 		      }
 		    }); //$.ajax
