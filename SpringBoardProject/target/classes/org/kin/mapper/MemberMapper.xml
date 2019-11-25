@@ -28,5 +28,19 @@
   		tbl_member mem LEFT OUTER JOIN tbl_member_auth auth on mem.userid = auth.userid 
 		WHERE mem.userid = #{userid} 
   </select>
+  
+  <insert id="signUp">
+  	insert into tbl_member (userid, userpw, username)
+  	values (#{userid},#{userpw},#{userName})
+  </insert>
+  
+  <insert id = "auth">
+  	insert into tbl_member_auth (userid, auth)
+  	values (#{userid}, 'ROLE_USER')
+  </insert>
+  
+  <select id="idCheck" resultType="int">
+  	select count(*) from tbl_member where userid=#{userid}
+  </select>
 
 </mapper>
