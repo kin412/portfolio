@@ -31,18 +31,18 @@
 										name="userid" type="text" autofocus>
 									
 								</div>
-								<div class="form-group">
-								<button id="idCheck" value="중복체크"></button>
+								<div class="form-group" id="idCheck">
+								<!-- <button type="button" id="idCheck" value="중복체크"></button> -->
 								</div>
 								<div class="form-group">
-									<input class="form-control" placeholder="비밀번호"
+									<input class="form-control" id="userpw" placeholder="비밀번호"
 										name="userpw" type="password" value="">
 								</div>
 								<div class="form-group">
-									<input class="form-control" placeholder="닉네임"
+									<input class="form-control" id="userName" placeholder="닉네임"
 										name="userName" type="text" value="">
 								</div>
-								<input type="submit" class="btn btn-lg btn-success btn-block" value="회원가입">
+								<input type="submit" id="submit" class="btn btn-lg btn-success btn-block" value="회원가입">
 							</fieldset>
 							<input type="hidden" name="${_csrf.parameterName}"
 								value="${_csrf.token}" />
@@ -53,27 +53,93 @@
 			</div>
 		</div>
 	</div>
-	
 	<script type="text/javascript">
 		var idCheck = 0;
+		var id=0;
+		var pw=0;
+		var nick=0;
+		var csrfHeaderName="${_csrf.headerName}";
+		var csrfTokenValue="${_csrf.token}";
+		$("#submit").attr("disabled", true);
+		
+		
 		$(function(){
-		$("#idCheck").click(function(){
-			var userid = $("#userid").val();
+		$("#userName").blur(function(){
+			if(!$("#userName").val()){
+				nick=0;
+				console.log("nick:"+nick);
+				$("#submit").attr("disabled", true);
+			}else{
+				nick=1;
+				console.log("nick:"+nick);
+				idCheck=id+pw+nick;
+				console.log("idCheck:" + idCheck);
+				if(idCheck==3){
+					$("#submit").attr("disabled", false);
+				}
+			}
+		});	
 			
+		$("#userpw").blur(function(){
+			if(!$("#userpw").val()){
+				pw=0;
+				console.log("pw:"+pw);
+				$("#submit").attr("disabled", true);
+			}else{
+				pw=1;
+				console.log("pw:"+pw);
+				idCheck=id+pw+nick;
+				console.log("idCheck:" + idCheck);
+				if(idCheck==3){
+					$("#submit").attr("disabled", false);
+				}
+			}
+		});
+			
+		$("#userid").blur(function(){
+			var userid = $("#userid").val();
+			if(!$("#userid").val()){
+				$("#idCheck").text("아이디를 입력하세요.");
+				$("#idCheck").css("color", "red");
+				id=0;
+				console.log("id:"+id);
+				$("#submit").attr("disabled", true);
+			}
+			console.log(userid);
 			$.ajax({
+				beforeSend: function(xhr){
+					xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+				},
 				type : 'POST',
 				data : userid,
-				url : "${pageContext.request.contextPath}/idcheck",
+				url : '/idcheck',
+				dataType : 'json',
 				success : function(data){
 					console.log("ajax success");
-					if(data.cnt > 0){
-						alert("아이디가 존재합니다. 다른 아이디를 입력해주세요.");
+					console.log(data);
+					console.log("data : " + data);
+					if(data > 0){
+						$("#idCheck").text("사용중인 아이디 입니다.");
+						$("#idCheck").css("color", "red");
+						id=0;
+						console.log("id:"+id);
+						$("#submit").attr("disabled", true);
+						
 					}else{
-						alert("사용가능한 아이디 입니다 ^0^");
+						$("#idCheck").text("사용 가능한 아이디 입니다.");
+						$("#idCheck").css("color", "green");
+						id=1;
+						console.log("id:"+id);
+						idCheck=id+pw+nick;
+						console.log("idCheck:" + idCheck);
+						if(idCheck==3){
+							$("#submit").attr("disabled", false);
+						}
 					}
 				},
 				error : function(){
-					console.log("실패");
+					console.log("ajax 에러");
+					
 				}
 			});
 		});

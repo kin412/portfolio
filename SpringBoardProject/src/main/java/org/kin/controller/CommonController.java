@@ -1,5 +1,8 @@
 package org.kin.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.kin.domain.MemberVO;
 import org.kin.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +77,9 @@ public class CommonController {
 	public int idCheck(@RequestBody String userid) {
 		log.info("idCheck---------------");
 		log.info("userid : "  + userid);
+		userid=userid.substring(0,userid.length()-1);
+		log.info("substring userid :" + userid);
+		
 		return mapper.idCheck(userid);
 	}
 }
