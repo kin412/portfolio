@@ -26,7 +26,7 @@
   <!-- Wrapper for slides -->
   <div class="carousel-inner" role="listbox">
     <div class="item active">
-      <img src="/resources/img/zex.jpg" alt=" alt">
+      <jsp:include page="customLogin.jsp" />
       <div class="carousel-caption">
         caption 
       </div>

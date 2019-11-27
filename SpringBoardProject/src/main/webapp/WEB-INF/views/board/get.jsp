@@ -15,13 +15,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/resources/css/get_upload.css">
 	<meta charset="UTF-8">
-	<title>register form</title>
+	<title>get</title>
 </head>
 <body>
 	
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Board Register</h1>
+			<h1 class="page-header"></h1>
 		</div>
 	</div>
 
@@ -29,7 +29,7 @@
 		<div class="col-lg-12">
 			<div class="panel panel-default">
 			
-				<div class="panel-heading"> Board Read</div>
+				<div class="panel-heading">글 조회</div>
 				<div class="panel-body">
 					<div class="form-group">
 						<label>글번호</label>
@@ -94,9 +94,9 @@
   		<div class="col-lg-12">
     		<div class="panel panel-default">
       			<div class="panel-heading">
-        			<i class="fa fa-comments fa-fw"></i> Reply
+        			<i class="fa fa-comments fa-fw"></i> 댓글
         			<sec:authorize access="isAuthenticated()">
-        				<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
+        				<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>새 댓글</button>
         			</sec:authorize>
       			</div>          
       			<div class="panel-body">        
@@ -114,28 +114,28 @@
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal"
                 aria-hidden="true">&times;</button>
-              <h4 class="modal-title" id="myModalLabel">REPLY MODAL</h4>
+              <h4 class="modal-title" id="myModalLabel">댓글 작성</h4>
             </div>
             <div class="modal-body">
               <div class="form-group">
-                <label>Reply</label> 
+                <label>댓글 내용</label> 
                 <input class="form-control" name='reply' value='New Reply!!!!'>
               </div>      
               <div class="form-group">
-                <label>Replyer</label> 
-                <input class="form-control" name='replyer' value='replyer'>
+                <label>작성자</label> 
+                <input class="form-control" name='replyer' value='replyer' readonly>
               </div>
               <div class="form-group">
                 <label>Reply Date</label> 
-                <input class="form-control" name='replyDate' value='2018-01-01 13:13'>
+                <input class="form-control" name='replyDate' value='2019-11-27 20:41'>
               </div>
       
             </div>
 			<div class="modal-footer">
-        		<button id='modalModBtn' type="button" class="btn btn-warning">Modify</button>
-       			<button id='modalRemoveBtn' type="button" class="btn btn-danger">Remove</button>
-        		<button id='modalRegisterBtn' type="button" class="btn btn-primary">Register</button>
-        		<button id='modalCloseBtn' type="button" class="btn btn-default">Close</button>
+        		<button id='modalModBtn' type="button" class="btn btn-warning">내 댓글 수정</button>
+       			<button id='modalRemoveBtn' type="button" class="btn btn-danger">내 댓글 삭제</button>
+        		<button id='modalRegisterBtn' type="button" class="btn btn-primary">등록</button>
+        		<button id='modalCloseBtn' type="button" class="btn btn-default">닫기</button>
       		</div>
       	</div>
         </div>
@@ -222,8 +222,8 @@
 		            };
 		        replyService.add(reply, function(result){
 		          
-		          alert(result);
-		          
+		          //alert(result);
+		          alert("등록완료");
 		          modal.find("input").val("");
 		          modal.modal("hide");
 		          
@@ -274,7 +274,7 @@
 		   	  }
 		        
 		        replyService.update(reply, function(result){ 
-		          alert(result);
+		          alert("수정완료");
 		          modal.modal("hide");
 		          showList(1);
 		          
@@ -307,7 +307,7 @@
 		       	  
 		       	replyService.remove(rno, originalReplyer, function(result){
 		   	        
-			   	      alert(result);
+			   	      alert("삭제 완료");
 			   	      modal.modal("hide");
 			   	      showList(pageNum);
 			   	      
@@ -416,7 +416,7 @@
 		replyService.remove(2, function(count){
 			console.log(count);
 			if(count === "success"){
-				alert("REMOVED");
+				alert("삭제 되었습니다.");
 			}
 		}, function(err){
 			alert('error....');

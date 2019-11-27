@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 	<meta charset="UTF-8">
-	<title>register form</title>
+	<title>register</title>
 </head>
 <body>
 	
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Board Register</h1>
+			<h1 class="page-header"></h1>
 		</div>
 	</div>
 
@@ -28,27 +28,27 @@
 		<div class="col-lg-12">
 			<div class="panel panel-default">
 			
-				<div class="panel-heading"> Board Register</div>
+				<div class="panel-heading">글작성</div>
 				<div class="panel-body">
 					<form role="form" action="/board/register" method="post">
 					 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						<div class="form-group">
-							<label>Title</label>
+							<label>제목</label>
 							<input class="form-control" name='title'>
 						</div>
 						<div class="form-group">
-							<label>Text area</label>
+							<label>내용</label>
 							<textarea class="form-control" rows="3" name='content'>
 							</textarea>
 						</div>
 						<div class="form-group">
-							<label>Writer</label>
+							<label>작성자</label>
 							<input class="form-control" name='writer'
 							value='<sec:authentication property="principal.username"/>' 
 							readonly="readonly">
 						</div>
-						<button type="submit" class="btn btn-default">Submit</button>
-						<button type="reset" class="btn btn-default">Reset</button>
+						<button type="submit" class="btn btn-default">등록</button>
+						<button type="reset" class="btn btn-default">초기화</button>
 					</form>
 					
 				</div>

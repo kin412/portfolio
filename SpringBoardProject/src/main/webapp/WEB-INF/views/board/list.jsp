@@ -13,12 +13,20 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/resources/css/list.css">
 	<meta charset="UTF-8">
 	<title>list</title>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/header.jsp"/>
-	<div align="center">list</div>
+	<div class="logout">
+		<jsp:include page="/WEB-INF/views/header.jsp"/>
+	</div>
+	<div class="free" align="center">자유 게시판</div>
+	<div class="regB">
+		<button id='regBtn' type="button" class="btn btn-xs btn-info">
+			글등록
+		</button>
+	</div>
 	<table align="center">
 		<thead>
 			<tr>
@@ -32,7 +40,7 @@
 		<c:forEach items="${list}" var="board">
 			<tr>
 				<td><c:out value="${board.bno}"/></td>
-				<td><a class='move' href='<c:out value="${board.bno}"/>'>
+				<td class="title"><a class='move' href='<c:out value="${board.bno}"/>'>
 				<c:out value="${board.title}"/></a></td>
 				<td><c:out value="${board.writer}"/></td>
 				<td><fmt:formatDate pattern="yyyy-MM-dd" 
@@ -43,7 +51,7 @@
 		</c:forEach>
 	</table>
 	
-	<div class='pull-right'>
+	<div align="center">
 		<ul class="pagination">
 			<c:if test="${pageMaker.prev}">
 				<li class="paginate_button previous"><a href="${pageMaker.startPage -1}">이전</a></li>
@@ -59,7 +67,7 @@
 		</ul>
 	</div>
 	
-	<div class='row'>
+	<div class='row' align="center">
 		<div class="col-lg-12">
 			<form id='searchForm' action="/board/list" method='get'>
 				<select name='type'>
@@ -86,15 +94,10 @@
 					value='<c:out value="${pageMaker.cri.pageNum}"/>' /> <input
 					type='hidden' name='amount'
 					value='<c:out value="${pageMaker.cri.amount}"/>' />
-				<button class='btn btn-default'>Search</button>
+				<button class='btn btn-default'>검색</button>
 			</form>
 		</div>
 	</div>
-	
-	<button id='regBtn' type="button" class="btn btn-xs pull-right">
-		글등록
-	</button>
-	
 	<form id='actionForm' action="/board/list" method='get'>
 		<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 		<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
@@ -110,14 +113,14 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+					<h4 class="modal-title" id="myModalLabel">알림</h4>
 				</div>
-				<div class="modal-body">처리가 완료되었습니다.</div>
+				<div class="modal-body">작성한 글이 등록 되었습니다.</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default"
-						data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save
-						changes</button>
+						data-dismiss="modal">닫기</button>
+					<!-- <button type="button" class="btn btn-primary">Save
+						changes</button> -->
 				</div>
 			</div>
 			<!-- /.modal-content -->

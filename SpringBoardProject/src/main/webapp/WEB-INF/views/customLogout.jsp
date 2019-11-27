@@ -34,7 +34,7 @@
 							<fieldset>
 								
 								<!-- Change this to a button or input when using this as a form -->
-								<a href="index.html" class="btn btn-lg btn-success btn-block">Logout</a>
+								<a href="index.html" class="btn btn-lg btn-success btn-block">logout</a>
 							</fieldset>
 							<input type="hidden" name="${_csrf.parameterName}"
 								value="${_csrf.token}" />

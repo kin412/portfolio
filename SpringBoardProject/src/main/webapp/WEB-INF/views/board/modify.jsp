@@ -15,13 +15,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/resources/css/get_upload.css">
 	<meta charset="UTF-8">
-	<title>modify form</title>
+	<title>modify</title>
 </head>
 <body>
 	
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Board modify</h1>
+			<h1 class="page-header">글 수정</h1>
 		</div>
 	</div>
 	<form role="form" action="/board/modify" method="post">
@@ -195,7 +195,7 @@
 			    
 			    console.log("delete file");
 			      
-			    if(confirm("Remove this file? ")){
+			    if(confirm("이파일을 삭제 하시겠습니까? ")){
 			    
 			      var targetLi = $(this).closest("li");
 			      targetLi.remove();

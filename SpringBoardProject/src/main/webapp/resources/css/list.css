@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+.regB{
+	position: relative;
+        left: 1225px;
+        top: 380px;
+}
+
+.logout{
+	position: relative;
+        left: 1200px;
+        top: 10px;
+}
+
+.free{
+	font-size: xx-large;
+}
+
+table {
+  /*border-spacing: 5px;
+  border-collapse: separate;*/
+}
+table tr{
+	border-bottom: 1px solid #dddddd;
+}
+
+table td {
+  padding:5px;
+  width: 100px;
+  text-align: center;
+  
+}
+table th{
+	text-align: center;
+}
+
+.title{
+	width: 250px;
+}

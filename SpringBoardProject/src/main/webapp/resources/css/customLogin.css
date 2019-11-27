@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+.div_wrap {
+  height: 50%;
+  margin: 0;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.back{
+	background: url("/resources/img/bgimg.png") no-repeat center;
+}
+
+.constyle{
+	padding: 150px 100px;
+}
+
+.shadow{
+	background-color:rgba(255,255,255, 0.3);
+}
