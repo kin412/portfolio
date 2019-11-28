@@ -630,17 +630,16 @@ $("input[type='file']").change(function(e){
 
 ## 9. 진행하면서 만났던 에러
 ### 구글링은 위대하다
-- 이미지 파일 경로를 webapp/resources 아래에 두어야하는데 src/main/resources 아래에 두어서 한참 찾았다.
-src - 프로그램 소스 파일 두는곳
-main/java - 자바 소스파일 두는곳
-src/main/resources - 프로그램을 실행할때 사용하는 설정파일
-properties, xml등을 두는곳
-src/main/webapp -  html, css, javascript, gif등
-정적 웹 자원을 두는곳
-src/main/webapp/WEB-INF - 웹 어플리케이션 정보 파일 두는곳.
-test - 코드 테스트 소스 두는곳
-test/java  - 단위 테스트 관련 자바 소스파일 두는곳
-bin - 소스코드가 컴파일된 *.class, *properties, *xml 파일.
+- 이미지 파일 경로를 webapp/resources 아래에 두어야하는데 src/main/resources 아래에 두어서 한참 찾았다. <br>
+src - 프로그램 소스 파일 두는곳 <br>
+main/java - 자바 소스파일 두는곳 <br>
+src/main/resources - 프로그램을 실행할때 사용하는 설정파일 두는곳<br>
+properties, xml등을 두는곳 <br>
+src/main/webapp -  html, css, javascript, gif등 정적 웹 자원을 두는곳 <br>
+src/main/webapp/WEB-INF - 웹 어플리케이션 정보 파일 두는곳.  <br>
+test - 코드 테스트 소스 두는곳 <br>
+test/java  - 단위 테스트 관련 자바 소스파일 두는곳 <br>
+bin - 소스코드가 컴파일된 .class, .properties, .xml 파일을 두는곳 <br>
 
 - 이 프로젝트 전에 전체적으로 스프링을 공부할때는 mysql을 사용하고 이 프로젝트는 oracle로 진행 했다. 
 mysql의 경우에는  gui 툴에서 쿼리문을 사용할때 그냥 사용하면 되었지만, oracle의 경우는 gui 툴에서 
@@ -675,13 +674,23 @@ SavedRequestAwareAuthenticationSuccessHandler 가 맡는다.
 - uncaught referenceError: $ajax is not defined
 js파일에서 에러가 나서 크롬 콘솔창을 통해 확인하니 오타가 있었다. 오타를 제대로 고치고
 페이지에 재접속했지만 동일한 에러가 났다. 페이지에서 js파일을 적용한 script 태그를
-script type="text/javascript" src="js파일명?ver=1"
+~~~
+<script type="text/javascript" src="js파일명?ver=1">
+~~~
 src 뒤에 ?ver=1를 붙여 해결. 간혹가다 스크립트 파일이 갱신이 안되는 경우가 있다. 그런 경우 사용한다. <br>
 	
-- 페이지 이동 실수 회원가입 처리를 위해 button onclick="location.href='/signUp.jsp'" 경로지정 실수.
-button onclick="location.href='/signUp'" 으로 컨트롤러의
+- 페이지 이동 실수 - 회원가입 처리 경로지정 실수.
+~~~jsp
+<button onclick="location.href='/signUp.jsp'">
+~~~
+~~~jsp
+<button onclick="location.href='/signUp'">
+~~~
+으로 컨트롤러의
+~~~java
 @GetMapping("/signUp")
 public void signUp(){}
+~~~
 이동한 뒤 viewresolver에 의해 WEB-INF/views/signUp.jsp가 되어 이동
 	
 - 회원가입 스프링 시큐리티 ajax 중복체크 스프링 시큐리티가 적용 되었을때 ajax로 데이터를 전송하는 경우
