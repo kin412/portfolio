@@ -105,7 +105,7 @@
  <div>
   <img src="https://user-images.githubusercontent.com/19407579/69789643-4c731100-1204-11ea-9a7e-d6810b19f202.PNG">
 </div>
-### 구현 화면<br>
+<br>
 
 ### 회원가입
 <div>
@@ -345,5 +345,78 @@ public class PageDTO {
 ### 페이징
 <div>
  <img src="https://user-images.githubusercontent.com/19407579/69799600-ef348b00-1216-11ea-8690-404503367581.gif">
+</div>
+<br>
+
+
+> 댓글
+- 글조회 view가 이미 구성된 상태에서 댓글을 다는 것이므로 model(view+data)를 전달하는 @controller가 아닌 data만 전달하는 @RestController 사용
+
+### 댓글 처리를 담당하는 ReplyController 중 댓글 등록 메서드
+~~~java
+@RequestMapping("/replies")
+@RestController
+@Log4j
+@AllArgsConstructor
+public class ReplyController {
+	private ReplyService service;
+	
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping(value="/new", consumes="application/json",
+			produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> create(@RequestBody ReplyVO vo){
+		
+		log.info("ReplyVO:" + vo);
+		int insertCount = service.register(vo);
+		
+		log.info("Reply INSERT COUNT:" + insertCount);
+		
+		return insertCount == 1
+				? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	...
+}
+~~~
+
+### reply.js 중 댓글 등록 ajax 처리
+~~~js
+function add(reply, callback, error){
+		console.log("reply......");
+		
+		$.ajax({
+			type : 'post',
+			url : '/replies/new',
+			data : JSON.stringify(reply),
+			contentType : "application/json; charset=utf-8",
+			success : function(result, status, xhr){
+				if(callback){
+					callback(result);
+				}
+			},
+			error : function(xhr, status, er){
+				if(error){
+					error(er);
+				}
+			}
+		})
+	}
+~~~
+
+### 댓글 등록
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69802236-77695f00-121c-11ea-84e2-7e5f5143c695.gif">
+</div>
+<br>
+
+### 댓글 수정
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69802238-79332280-121c-11ea-9063-b159c9dacba4.gif">
+</div>
+<br>
+
+### 댓글 삭제
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69802243-7a644f80-121c-11ea-8424-29e214b2ae97.gif">
 </div>
 <br>
