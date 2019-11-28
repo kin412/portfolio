@@ -92,7 +92,7 @@
  ~~~
 
 ### security-context.xml : 로그인 시 핸들러 지정
-~~~
+~~~xml
 <security:form-login login-page="/customLogin"
 		authentication-success-handler-ref="customLoginSuccess"/>
 		<security:logout logout-url="/customLogout" invalidate-session="true"
@@ -129,7 +129,7 @@
 - 요청 - 컨트롤러 - 서비스 - mybatis - DB - 컨트롤러 - 뷰
 ### 글쓰기
 ### boardController - @PreAuthorize("isAuthenticated()")를 통해 로그인 인증이 되지 않았다면 로그인 화면으로 넘어감
-~~~
+~~~java
 @PostMapping("/register")
 	@PreAuthorize("isAuthenticated()")
 	public String register(BoardVO board, RedirectAttributes rttr) {
@@ -177,7 +177,7 @@
 - 게시판 페이징 - 페이징을 위한 criteria클래스 뿐만 아니라 이를 이용해 요청에 대한 가공된 페이지정보를 가질 pageDTO 클래스 필요
 
 ### 검색과 페이징을 위한 criteria 클래스
-~~~
+~~~java
 @Data
 public class Criteria {
 	
@@ -216,7 +216,7 @@ public class Criteria {
 ~~~
 
 ### 검색과 페이징을 위한 BoardMapper.xml 
-~~~
+~~~xml
 <sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
 			<foreach item='type' collection="typeArr">
@@ -253,7 +253,7 @@ public class Criteria {
 ~~~
 
 ### 페이징을 위한 PageDTO 
-~~~
+~~~java
 @Data
 public class PageDTO {
 	
@@ -286,7 +286,7 @@ public class PageDTO {
 ~~~
 
 ### list.jsp
-~~~
+~~~jsp
 <div align="center">
 		<ul class="pagination">
 			<c:if test="${pageMaker.prev}">
