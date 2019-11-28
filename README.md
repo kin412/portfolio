@@ -68,7 +68,7 @@
 ## 6. 기능별 주요 로직
 > 회원가입, 로그인, 로그아웃
 - security 와 handler를 이용해 처리
-&nbsp; customLogin.jsp, customLogout - hidden속성으로 csrf토큰 사용.
+customLogin.jsp, customLogout - hidden속성으로 csrf토큰 사용.
 ~~~
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 ~~~
