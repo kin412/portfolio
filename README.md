@@ -150,7 +150,7 @@
 	}
 ~~~
 <div>
- <img src="https://user-images.githubusercontent.com/19407579/69795805-2eaba900-1210-11ea-82b1-719d67da1303.gif">
+ <img src="https://user-images.githubusercontent.com/19407579/69805445-fe6e0580-1223-11ea-8451-67e22c7b7fee.gif">
 </div>
 <br>
 
