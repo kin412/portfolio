@@ -170,3 +170,168 @@
 <div>
  <img src="https://user-images.githubusercontent.com/19407579/69795818-31a69980-1210-11ea-9c70-84e3c9ff2884.gif">
 </div>
+<br>
+
+> 게시판 검색 , 페이징
+- 게시판 검색 - 검색 기능에서 검색 조건이 바뀔때 마다 다른 서비스를 호출하는 것은 비효율적. 하나의 서비스에서 mybatis 동적SQL을 사용해 처리
+- 게시판 페이징 - 페이징을 위한 criteria클래스 뿐만 아니라 이를 이용해 요청에 대한 가공된 페이지정보를 가질 pageDTO 클래스 필요
+
+### 검색과 페이징을 위한 criteria 클래스
+~~~
+@Data
+public class Criteria {
+	
+	private int pageNum; // 현재 페이지 번호 
+	private int amount; // 페이징 처리에서 한번에 보여줄 페이지 버튼의 수
+	
+	private String type; // 검색 유형
+	private String keyword; // 검색 내용
+	
+	public Criteria() {
+		this(1, 10);
+	}
+	
+	public Criteria(int pageNum, int amount) {
+		this.pageNum = pageNum;
+		this.amount = amount;
+	}
+	
+	public String[] getTypeArr() {
+		return type == null ? new String[] {}: type.split("");
+	}
+	
+	public String getListLink() {
+
+		UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
+				.queryParam("pageNum", this.pageNum)
+				.queryParam("amount", this.getAmount())
+				.queryParam("type", this.getType())
+				.queryParam("keyword", this.getKeyword());
+
+		return builder.toUriString();
+
+	}
+	
+}
+~~~
+
+### 검색과 페이징을 위한 BoardMapper.xml 
+~~~
+<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							title like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							content like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'W'.toString()">
+							writer like '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+	...
+	<select id="getListWithPaging" resultType="org.kin.domain.BoardVO">
+	  <![CDATA[select bno, title, content, writer, regdate, updatedate from 
+	      (select /*+INDEX_DESC(tbl_board pk_board) */
+	       rownum rn, bno, title, content, writer, regdate, updatedate 
+	       from tbl_board where 
+	  ]]>
+			<include refid="criteria"></include>
+	      
+	  <![CDATA[    
+	    rownum <= #{pageNum} * #{amount})
+	  	where rn > (#{pageNum} -1) * #{amount}   
+	  ]]>
+	</select>
+~~~
+
+### 페이징을 위한 PageDTO 
+~~~
+@Data
+public class PageDTO {
+	
+	private int startPage; // 현재페이지에서 첫번째페이지 번호
+	private int endPage; // 현재페이지에서 마지막페이지 번호
+	private boolean prev; // 1페이지일 경우와 아닐경우 이전페이지 버튼 처리
+	private boolean next; // 마지막페이지일 경우와 아닐경우 다음 페이지 버튼 처리
+	private int total; // 총 게시글 수
+	private Criteria cri; // 페이징 계산에 필요한 객체
+	
+	public PageDTO(Criteria cri, int total) {
+		
+		this.cri = cri;
+		this.total = total;
+		
+		this.endPage = (int)(Math.ceil(cri.getPageNum() / 10.0)) * 10;
+		this.startPage = this.endPage - 9;
+		int realEnd = (int)(Math.ceil((total * 1.0)/cri.getAmount()));
+		
+		if(realEnd < this.endPage) {
+			this.endPage = realEnd;
+		}
+		
+		this.prev = this.startPage > 1;
+		this.next = this.endPage < realEnd;
+		
+	}
+	
+}
+~~~
+
+### list.jsp
+~~~
+<div align="center">
+		<ul class="pagination">
+			<c:if test="${pageMaker.prev}">
+				<li class="paginate_button previous"><a href="${pageMaker.startPage -1}">이전</a></li>
+			</c:if>
+			<c:forEach var="num" begin="${pageMaker.startPage}"
+			end="${pageMaker.endPage}">
+			<li class = "paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }">
+			<a href="${num}">${num}</a></li>
+			</c:forEach>
+			<c:if test="${pageMaker.next}">
+				<li class="paginate_button next"><a href="${pageMaker.endPage +1}">다음</a></li>
+			</c:if>
+		</ul>
+	</div>
+	
+	<div class='row' align="center">
+		<div class="col-lg-12">
+			<form id='searchForm' action="/board/list" method='get'>
+				<select name='type'>
+					<option value=""
+						<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
+					<option value="T"
+						<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>
+					<option value="C"
+						<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>내용</option>
+					<option value="W"
+						<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
+					<option value="TC"
+						<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목
+						or 내용</option>
+					<option value="TW"
+						<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>제목
+						or 작성자</option>
+					<option value="TWC"
+						<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목
+						or 내용 or 작성자</option>
+				</select> <input type='text' name='keyword'
+					value='<c:out value="${pageMaker.cri.keyword}"/>' /> <input
+					type='hidden' name='pageNum'
+					value='<c:out value="${pageMaker.cri.pageNum}"/>' /> <input
+					type='hidden' name='amount'
+					value='<c:out value="${pageMaker.cri.amount}"/>' />
+				<button class='btn btn-default'>검색</button>
+			</form>
+		</div>
+	</div>
+~~~
