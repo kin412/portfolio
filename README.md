@@ -69,12 +69,12 @@
 > 회원가입, 로그인, 로그아웃
 - security 와 handler를 이용해 처리<br>
 ### customLogin.jsp, customLogout.jsp : hidden속성으로 csrf토큰 사용.
-~~~
+~~~jsp
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 ~~~
 
 ### commonController : 회원가입 시 비밀번호 BCyptPasswordEncoder 적용
- ~~~
+ ~~~java
  @PostMapping("/signUp")
 	public String signUp(MemberVO member, RedirectAttributes rttr) {
 		log.info("sign up---------------");
