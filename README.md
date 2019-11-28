@@ -20,5 +20,5 @@
 
 ## 2. 개발환경
 ###front-end
-        ● bootstrap 3.3.2
-        ● jquery 3.3.1
+● bootstrap 3.3.2
+● jquery 3.3.1
