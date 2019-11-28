@@ -676,7 +676,7 @@ SavedRequestAwareAuthenticationSuccessHandler 가 맡는다.
 js파일에서 에러가 나서 크롬 콘솔창을 통해 확인하니 오타가 있었다. 오타를 제대로 고치고
 페이지에 재접속했지만 동일한 에러가 났다. 페이지에서 js파일을 적용한 script 태그를
 <script type="text/javascript" src="js파일명?ver=1">
-src 뒤에 ?ver=1를 붙여 해결. 간혹가다 스크립트 파일이 갱신이 안되는 경우가 있다. 그런 경우 사용한다.
+src 뒤에 ?ver=1를 붙여 해결. 간혹가다 스크립트 파일이 갱신이 안되는 경우가 있다. 그런 경우 사용한다. <br>
 	
 - 페이지 이동 실수 회원가입 처리를 위해 <button onclick="location.href='/signUp.jsp'"> 경로지정 실수.
 <button onclick="location.href='/signUp'"> 으로 컨트롤러의
