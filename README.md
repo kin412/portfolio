@@ -35,4 +35,15 @@
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 ## 3. 개발일정 (2019.11.16 ~ 2019.11.28)
-
+- 11.16 spring mvc 기본 환경설정 (lombok, oracle, mybatis)
+- 11.17 DB Modeling, mybatis를 이용한 boardService,boardController CRUD 구현, 글목록 및 글작성 view 구현
+- 11.18 글조회, 수정, 삭제 view 구현, 글목록 페이징처리 및 view 이동에 따른 페이징 유지 처리
+- 11.19 ajax 댓글 CRUD 구현
+- 11.20 ajax 첨부파일 CRUD 구현 
+- 11.21 spring security 모듈 구현 및 테스트
+- 11.22 spring security 적용
+- 11.23 ~ 11.24 부모님과의 시간
+- 11.25 spring security 로그인 및 회원가입 구현
+- 11.26 회원가입 중복체크 ajax 구현
+- 11.27 bootstrap ui 정리
+- github 포트폴리오 소개(readme.md) 작성
