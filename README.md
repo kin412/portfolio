@@ -106,16 +106,19 @@
   <img src="https://user-images.githubusercontent.com/19407579/69789643-4c731100-1204-11ea-9a7e-d6810b19f202.PNG">
 </div>
 ### 구현 화면<br>
+
 ### 회원가입
 <div>
   <img src="https://user-images.githubusercontent.com/19407579/69789626-44b36c80-1204-11ea-94ac-d53cf39954ff.gif">
 </div>
 <br>
+
 ### 로그인
 <div>
   <img src="https://user-images.githubusercontent.com/19407579/69789630-4715c680-1204-11ea-8631-d50bd3f51808.gif">
 </div>
 <br>
+
 ### 로그아웃
 <div>
   <img src="https://user-images.githubusercontent.com/19407579/69789640-4aa94d80-1204-11ea-9555-73fe04166569.gif">
@@ -156,6 +159,7 @@
  <img src="https://user-images.githubusercontent.com/19407579/69795810-2fdcd600-1210-11ea-9970-8068e33866e9.gif">
 </div>
 <br>
+
 ### 글조회나 글삭제는 글쓴이와 로그인한 계정을 비교하여 같을때만 가능
 <div>
  <img src="https://user-images.githubusercontent.com/19407579/69795813-310e0300-1210-11ea-997a-27a75dd7e211.gif">
