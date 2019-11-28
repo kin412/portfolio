@@ -335,3 +335,15 @@ public class PageDTO {
 		</div>
 	</div>
 ~~~
+
+### 검색
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69799597-ed6ac780-1216-11ea-9af9-b569be35792c.gif">
+</div>
+<br>
+
+### 페이징
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69799600-ef348b00-1216-11ea-8690-404503367581.gif">
+</div>
+<br>
