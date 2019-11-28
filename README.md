@@ -72,7 +72,26 @@ customLogin.jsp, customLogout.jsp : hidden속성으로 csrf토큰 사용.
 ~~~
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 ~~~
-security-context.xml : 핸들러 및 Password Encoder 지정
+
+commonController : 회원가입 시 비밀번호 BCyptPasswordEncoder 적용
+ ~~~
+ @PostMapping("/signUp")
+	public String signUp(MemberVO member, RedirectAttributes rttr) {
+		log.info("sign up---------------");
+		log.info("member.getUserid() : "  + member.getUserid());
+		log.info("member.getUserpw() : "  + member.getUserpw());
+		log.info("member.getUserName() : "  + member.getUserName());
+		BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+		member.setUserpw(pe.encode(member.getUserpw()));
+		mapper.signUp(member);
+		mapper.auth(member);
+		rttr.addFlashAttribute("result", "success");
+		
+		return "redirect:/customLogin";
+	}
+ ~~~
+
+security-context.xml : 로그인 시 핸들러 지정
 ~~~
 <security:form-login login-page="/customLogin"
 		authentication-success-handler-ref="customLoginSuccess"/>
@@ -80,25 +99,65 @@ security-context.xml : 핸들러 및 Password Encoder 지정
 		delete-cookies="remember-me,JSESSION_ID" />
 		<security:remember-me data-source-ref="dataSource" 
 		token-validity-seconds="604800"/>
-    ...
-    <security:authentication-manager>
-		<security:authentication-provider
-			user-service-ref="customUserDetailsService">
-			<security:password-encoder ref="bcryptPasswordEncoder" />
-		</security:authentication-provider>
-	</security:authentication-manager>
  ~~~
+ 
  db에 입력된 결과
  <div>
   <img src="https://user-images.githubusercontent.com/19407579/69789643-4c731100-1204-11ea-9a7e-d6810b19f202.PNG">
 </div>
 구현 화면
+회원가입
 <div>
   <img src="https://user-images.githubusercontent.com/19407579/69789626-44b36c80-1204-11ea-94ac-d53cf39954ff.gif">
 </div>
+로그인
 <div>
   <img src="https://user-images.githubusercontent.com/19407579/69789630-4715c680-1204-11ea-8631-d50bd3f51808.gif">
 </div>
+로그아웃
 <div>
   <img src="https://user-images.githubusercontent.com/19407579/69789640-4aa94d80-1204-11ea-9555-73fe04166569.gif">
+</div> <br>
+
+> 게시판 CRUD
+- 요청 - 컨트롤러 - 서비스 - mybatis - DB - 컨트롤러 - 뷰
+글쓰기
+boardController - @PreAuthorize("isAuthenticated()")를 통해 로그인 인증이 되지 않았다면 로그인 화면으로 넘어감
+~~~
+@PostMapping("/register")
+	@PreAuthorize("isAuthenticated()")
+	public String register(BoardVO board, RedirectAttributes rttr) {
+		
+		log.info("====================");
+		log.info("register : " + board);
+		
+		if(board.getAttachList() != null) {
+			board.getAttachList().forEach(attach -> log.info(attach));
+		}
+		
+		log.info("====================");
+		
+		service.register(board);
+		rttr.addFlashAttribute("result", board.getBno());
+		
+		return "redirect:/board/list";
+	}
+~~~
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69795805-2eaba900-1210-11ea-82b1-719d67da1303.gif">
+</div>
+
+
+글조회
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69795810-2fdcd600-1210-11ea-9970-8068e33866e9.gif">
+</div>
+글조회나 글삭제는 글쓴이와 로그인한 계정을 비교하여 같을때만 가능
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69795813-310e0300-1210-11ea-997a-27a75dd7e211.gif">
+</div>
+
+글삭제
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69795818-31a69980-1210-11ea-9c70-84e3c9ff2884.gif">
 </div>
