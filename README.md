@@ -105,7 +105,7 @@ security-context.xml : 로그인 시 핸들러 지정
  <div>
   <img src="https://user-images.githubusercontent.com/19407579/69789643-4c731100-1204-11ea-9a7e-d6810b19f202.PNG">
 </div>
-구현 화면
+구현 화면<br>
 회원가입
 <div>
   <img src="https://user-images.githubusercontent.com/19407579/69789626-44b36c80-1204-11ea-94ac-d53cf39954ff.gif">
@@ -146,7 +146,6 @@ boardController - @PreAuthorize("isAuthenticated()")를 통해 로그인 인증�
 <div>
  <img src="https://user-images.githubusercontent.com/19407579/69795805-2eaba900-1210-11ea-82b1-719d67da1303.gif">
 </div>
-
 
 글조회
 <div>
