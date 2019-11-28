@@ -420,3 +420,188 @@ function add(reply, callback, error){
  <img src="https://user-images.githubusercontent.com/19407579/69802243-7a644f80-121c-11ea-8424-29e214b2ae97.gif">
 </div>
 <br>
+
+>파일업로드
+- ajax를 이용해 첨부파일은 글등록과 별도로 처리되도록 구성. 업로드된 파일의 정보는 DB에 저장할 때 다음의 정보가 필요하다.
+  UUID로 구성된 파일의 이름과 원본 파일의 이름, 원본 파일이 저장된 경로, 썸네일 정보
+  
+### register.jsp 중 글을 게시할때 파일 정보를 참조할수 있도록 hidden으로 함께 전송
+~~~jsp
+$("button[type='submit']").on("click", function(e){
+    
+    e.preventDefault();
+    
+    console.log("submit clicked");
+    
+    var str = "";
+    
+    $(".uploadResult ul li").each(function(i, obj){
+      
+      var jobj = $(obj);
+      
+      console.dir(jobj);
+      console.log("-------------------------");
+      console.log(jobj.data("filename"));
+      
+      
+      str += "<input type='hidden' name='attachList["+i+"].fileName' value='"+jobj.data("filename")+"'>";
+      str += "<input type='hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
+      str += "<input type='hidden' name='attachList["+i+"].uploadPath' value='"+jobj.data("path")+"'>";
+      str += "<input type='hidden' name='attachList["+i+"].fileType' value='"+ jobj.data("type")+"'>";
+      
+    });
+    
+    console.log(str);
+    
+    formObj.append(str).submit();
+    
+  });
+~~~
+
+### register.jsp 중 실제로 파일 업로드를 처리하는 ajax
+~~~jsp
+$("input[type='file']").change(function(e){
+
+    var formData = new FormData();
+    
+    var inputFile = $("input[name='uploadFile']");
+    
+    var files = inputFile[0].files;
+    
+    for(var i = 0; i < files.length; i++){
+
+      if(!checkExtension(files[i].name, files[i].size) ){
+        return false;
+      }
+      formData.append("uploadFile", files[i]);
+      
+    }
+    
+    $.ajax({
+    	url: '/uploadAjaxAction',
+        processData: false, 
+        contentType: false,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+        },
+        data:formData,
+        type: 'POST',
+        dataType:'json',
+        success: function(result){
+          console.log(result); 
+  		  showUploadResult(result);
+
+      }
+    }); //$.ajax
+    
+  });
+~~~
+
+### UploadController 중 파일 등록 부분
+하나의 폴더내에 파일이 계속 누적되면 느려지기 때문에 일단위로 폴더를 새로 만들어 파일 저장, 이미지 파일이라면 썸네일 생성 
+~~~java
+@PreAuthorize("isAuthenticated()")
+	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
+
+		List<AttachFileDTO> list = new ArrayList<>();
+		//저장경로 지정
+		String uploadFolder = "C:\\upload";
+		//하나의 폴더 내에 파일이 계속 누적되면 느려지기 때문에 일단위로 폴더를 새로 만들어 파일 저장
+		String uploadFolderPath = getFolder();
+		
+		File uploadPath = new File(uploadFolder, uploadFolderPath);
+
+		if (uploadPath.exists() == false) {
+			uploadPath.mkdirs();
+		}
+		
+
+		for (MultipartFile multipartFile : uploadFile) {
+
+			AttachFileDTO attachDTO = new AttachFileDTO();
+
+			String uploadFileName = multipartFile.getOriginalFilename();
+
+			// IE has file path
+			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+			log.info("only file name: " + uploadFileName);
+			attachDTO.setFileName(uploadFileName);
+			//파일명 중복방지를 위한 UUID 지정
+			UUID uuid = UUID.randomUUID();
+
+			uploadFileName = uuid.toString() + "_" + uploadFileName;
+
+			try {
+				File saveFile = new File(uploadPath, uploadFileName);
+				multipartFile.transferTo(saveFile);
+
+				attachDTO.setUuid(uuid.toString());
+				attachDTO.setUploadPath(uploadFolderPath);
+
+				// 저장하는 파일이 이미지 라면 썸네일 생성
+				if (checkImageType(saveFile)) {
+
+					attachDTO.setImage(true);
+
+					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
+
+					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 300, 300);
+
+					thumbnail.close();
+				}
+
+				
+				list.add(attachDTO);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} 
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+~~~
+
+### 파일 등록
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69810710-d97f8f80-122f-11ea-9399-d0239680f341.gif">
+</div>
+<br>
+
+### 파일 등록 결과
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69810714-db495300-122f-11ea-9dde-3f1ed6ac6d01.gif">
+</div>
+<br>
+
+### 파일 수정
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69810723-e1d7ca80-122f-11ea-8f74-520b3d558352.gif">
+</div>
+<br>
+
+### 파일 수정 결과
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69810724-e308f780-122f-11ea-80c0-097e2ef922fe.gif">
+</div>
+<br>
+
+### 게시글 파일 확인
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69810729-e56b5180-122f-11ea-8a84-5801d17c6369.gif">
+</div>
+<br>
+
+### 파일 삭제
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69810733-e8664200-122f-11ea-8d5f-ed55c58879b9.gif">
+</div>
+<br>
+
+### 파일 삭제 결과
+<div>
+ <img src="https://user-images.githubusercontent.com/19407579/69810742-ea300580-122f-11ea-8198-fc578566bc40.gif">
+</div>
+<br>
