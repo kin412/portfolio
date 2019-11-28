@@ -665,7 +665,7 @@ get이면 get post면 post 수정이면 put 삭제면 delete를 지정해줘야�
 
 - /src/main/resources/log4j.xml 하단  Root Logger <priority value=""/> 부분 warn, info, debug 각 값에 따라 로깅 레벨이 달라진다.
 
--spring security SavedRequestAwareAuthenticationSuccessHandler- Using default Url: /
+- spring security SavedRequestAwareAuthenticationSuccessHandler- Using default Url: /
 스프링 시큐리티는 핸들러를 따로 만들어 두지 않는다면 기본적으로 로그인 후처리를
 SavedRequestAwareAuthenticationSuccessHandler 가 맡는다.
 사용자가 원래 보려고 했던 페이지의 정보를 유지해서 로그인 후에 다시 원했던 페이지로 이동한다.
