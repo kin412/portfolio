@@ -72,3 +72,33 @@ customLogin.jsp, customLogout.jsp : hidden속성으로 csrf토큰 사용.
 ~~~
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 ~~~
+security-context.xml : 핸들러 및 Password Encoder 지정
+~~~
+<security:form-login login-page="/customLogin"
+		authentication-success-handler-ref="customLoginSuccess"/>
+		<security:logout logout-url="/customLogout" invalidate-session="true"
+		delete-cookies="remember-me,JSESSION_ID" />
+		<security:remember-me data-source-ref="dataSource" 
+		token-validity-seconds="604800"/>
+    ...
+    <security:authentication-manager>
+		<security:authentication-provider
+			user-service-ref="customUserDetailsService">
+			<security:password-encoder ref="bcryptPasswordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+ ~~~
+ db에 입력된 결과
+ <div>
+  <img src="https://user-images.githubusercontent.com/19407579/69789643-4c731100-1204-11ea-9a7e-d6810b19f202.PNG">
+</div>
+구현 화면
+<div>
+  <img src="https://user-images.githubusercontent.com/19407579/69789626-44b36c80-1204-11ea-94ac-d53cf39954ff.gif">
+</div>
+<div>
+  <img src="https://user-images.githubusercontent.com/19407579/69789630-4715c680-1204-11ea-8631-d50bd3f51808.gif">
+</div>
+<div>
+  <img src="https://user-images.githubusercontent.com/19407579/69789640-4aa94d80-1204-11ea-9555-73fe04166569.gif">
+</div>
