@@ -605,3 +605,86 @@ $("input[type='file']").change(function(e){
  <img src="https://user-images.githubusercontent.com/19407579/69810742-ea300580-122f-11ea-8198-fc578566bc40.gif">
 </div>
 <br>
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+## 7. 추가해야 할 부분
+- spring security 권한에 따른 페이지
+- 마이페이지
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+## 8. 스프링으로 진행하며 느낀점
+- jsp model2 mvc에 비해 의존성 주입을 활용한 어노테이션으로 객체 자동 생성이 편하다.
+- jsp model2 mvc에서 요청한 URL을 잘라서 String 변수command 를 통해  요청을 해결하는 것보다 @requestmapping 혹은
+@postmapping, @getmapping 한방으로 끝나는 요청 분기 나누는게 편하다.
+- jsp model2 mvc의 preparedStatment 에 비해 월등히 편한 mybatis
+- junit의 단위테스트의 편리함. 꼭 실행화면에서 안해도 된다. was를 사용하지 않아도 되서 실행시간을 엄청 절감 할 수 있다.
+일반 main메소드에서 테스트를 한다고하면 해당 클래스를 만들고 메소드를 호출해야하는 번거로움 있다.
+그냥 junit 테스트코드에서 단위테스트하면 여러 메소드가 바로 이루어지고 junit탭에 정리가 되어서 나와 에러가 뜨면 바로바로 잡을수 있어서 좋았음.
+기능별로 하나의 단위테스트 모듈을 만들어 두면 두고두고 써먹을 수 있을 것 같다.
+- 권한에 따른 흐름제어를 내가 1부터 코딩 하는것이 아니고 spring security를 통해 쉽게 제어할 수 있다.
+- lombok을 통해 setter, getter, tostring 작성을 생략 가능해 편하다.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+## 9. 진행하면서 만났던 에러
+### 구글링은 위대하다
+- 이미지 파일 경로를 webapp/resources 아래에 두어야하는데 src/main/resources 아래에 두어서 한참 찾았다.
+src - 프로그램 소스 파일 두는곳
+main/java - 자바 소스파일 두는곳
+src/main/resources - 프로그램을 실행할때 사용하는 설정파일
+properties, xml등을 두는곳
+src/main/webapp -  html, css, javascript, gif등
+정적 웹 자원을 두는곳
+src/main/webapp/WEB-INF - 웹 어플리케이션 정보 파일 두는곳.
+test - 코드 테스트 소스 두는곳
+test/java  - 단위 테스트 관련 자바 소스파일 두는곳
+bin - 소스코드가 컴파일된 *.class, *properties, *xml 파일.
+
+- 이 프로젝트 전에 전체적으로 스프링을 공부할때는 mysql을 사용하고 이 프로젝트는 oracle로 진행 했다. 
+mysql의 경우에는  gui 툴에서 쿼리문을 사용할때 그냥 사용하면 되었지만, oracle의 경우는 gui 툴에서 
+쿼리문을 사용할 시 반드시 commit을 해줘야 적용이 된다는 걸 알았다.
+
+- db 테스트 중 시퀀스값이 20씩 증가하는 문제. cache 옵션이 적용되어 그랬던 것.
+시퀀스의 cache size를 조회해 보니 20으로 설정되어 있었다.
+~~~
+select sequence_name, cache_size from user_sequences
+~~~
+cache 옵션을 사용하지 않도록 설정을 변경 했다.
+~~~
+alter sequence seq1 nocache
+~~~
+
+- business tier에서 한글이 깨지는 현상 - web.xml에 filter를 추가한다.
+
+- mapper select문 에서 resultType 지정을 replyVO 로 패키지명 없이 클래스 명만 기입해서 에러가 발생. 패키지명까지 지명해주어야 한다.
+
+- ajax 댓글 처리시 json데이터로 db에 접근하지 못함. 데이터 입력, 수정, 삭제 별로 post, put, delete를 주어야하는데 설정을 잘못했다.
+get이면 get post면 post 수정이면 put 삭제면 delete를 지정해줘야한다.
+
+- /src/main/resources/log4j.xml 하단  Root Logger <priority value=""/> 부분 warn, info, debug 각 값에 따라 로깅 레벨이 달라진다.
+
+-spring security SavedRequestAwareAuthenticationSuccessHandler- Using default Url: /
+스프링 시큐리티는 핸들러를 따로 만들어 두지 않는다면 기본적으로 로그인 후처리를
+SavedRequestAwareAuthenticationSuccessHandler 가 맡는다.
+사용자가 원래 보려고 했던 페이지의 정보를 유지해서 로그인 후에 다시 원했던 페이지로 이동한다.
+예를들면 로그인 하지 않은채 글작성을 시도할시 이를 이용해 로그인페이지로 가서 로그인후 다시 글작성 페이지로 돌아오는식이다.
+일반 로그인 시에는 로그인 전용 핸들러를 만들어 경로를 지정해주자. 
+
+- uncaught referenceError: $ajax is not defined
+js파일에서 에러가 나서 크롬 콘솔창을 통해 확인하니 오타가 있었다. 오타를 제대로 고치고
+페이지에 재접속했지만 동일한 에러가 났다. 페이지에서 js파일을 적용한 script 태그를
+<script type="text/javascript" src="js파일명?ver=1">
+src 뒤에 ?ver=1를 붙여 해결. 간혹가다 스크립트 파일이 갱신이 안되는 경우가 있다. 그런 경우 사용한다.
+	
+- 페이지 이동 실수 회원가입 처리를 위해 <button onclick="location.href='/signUp.jsp'"> 경로지정 실수.
+<button onclick="location.href='/signUp'"> 으로 컨트롤러의
+@GetMapping("/signUp")
+public void signUp(){}
+이동한뒤 viewresolver에 의해 WEB-INF/views/signUp.jsp가 되어 이동
+	
+- 회원가입 스프링 시큐리티 ajax 중복체크 스프링 시큐리티가 적용 되었을때 ajax로 데이터를 전송하는 경우
+반드시 csrf토큰값을 헤더정보에 추가해 보내야 한다.
+
+- ajax 사용시 dataType:json을 지정해 주지 않아서 xml로 데이터가 넘어와 제대로 로직을 타지않아 헤맸음
