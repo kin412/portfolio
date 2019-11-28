@@ -42,8 +42,10 @@
 - 11.20 ajax 첨부파일 CRUD 구현 
 - 11.21 spring security 모듈 구현 및 테스트
 - 11.22 spring security 적용
-- 11.23 ~ 11.24 부모님과의 시간
 - 11.25 spring security 로그인 및 회원가입 구현
 - 11.26 회원가입 중복체크 ajax 구현
 - 11.27 bootstrap ui 정리
 - github 포트폴리오 소개(readme.md) 작성
+
+## 4. 프로젝트 구조
+
