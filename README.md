@@ -164,13 +164,13 @@
 </div>
 <br>
 
-### 글조회
+### 글수정
 <div>
  <img src="https://user-images.githubusercontent.com/19407579/69795810-2fdcd600-1210-11ea-9970-8068e33866e9.gif">
 </div>
 <br>
 
-### 글조회나 글삭제는 글쓴이와 로그인한 계정을 비교하여 같을때만 가능
+### 글수정이나 글삭제는 글쓴이와 로그인한 계정을 비교하여 같을때만 가능
 <div>
  <img src="https://user-images.githubusercontent.com/19407579/69795813-310e0300-1210-11ea-997a-27a75dd7e211.gif">
 </div>
