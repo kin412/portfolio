@@ -648,15 +648,14 @@ $("input[type='file']").change(function(e){
 # 진행하면서 만났던 에러
 ### 구글링은 위대하다
 - 이미지 파일 경로를 webapp/resources 아래에 두어야하는데 src/main/resources 아래에 두어서 한참 찾았다. <br>
-src - 프로그램 소스 파일 두는곳 <br>
-main/java - 자바 소스파일 두는곳 <br>
-src/main/resources - 프로그램을 실행할때 사용하는 설정파일 두는곳<br>
-properties, xml등을 두는곳 <br>
-src/main/webapp -  html, css, javascript, gif등 정적 웹 자원을 두는곳 <br>
-src/main/webapp/WEB-INF - 웹 어플리케이션 정보 파일 두는곳.  <br>
-test - 코드 테스트 소스 두는곳 <br>
-test/java  - 단위 테스트 관련 자바 소스파일 두는곳 <br>
-bin - 소스코드가 컴파일된 .class, .properties, .xml 파일을 두는곳 <br>
+src - 프로그램 소스 파일 경로 <br>
+main/java - 자바 소스파일 경로 <br>
+src/main/resources - 프로그램을 실행할때 사용하는 설정파일 properties, xml 경로 <br>
+src/main/webapp -  html, css, javascript, gif등 정적 웹 자원 경로 <br>
+src/main/webapp/WEB-INF - 웹 어플리케이션 정보 파일 경로  <br>
+test - 코드 테스트 소스 경로 <br>
+test/java  - 단위 테스트 관련 자바 소스파일 경로 <br>
+bin - 소스코드가 컴파일된 .class, .properties, .xml 파일  <br>
 
 - 이 프로젝트 전에 전체적으로 스프링을 공부할때는 mysql을 사용하고 이 프로젝트는 oracle로 진행 했다. 
 mysql의 경우에는  gui 툴에서 쿼리문을 사용할때 그냥 사용하면 되었지만, oracle의 경우는 gui 툴에서 
