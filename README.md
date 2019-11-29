@@ -681,14 +681,14 @@ get이면 get post면 post 수정이면 put 삭제면 delete를 지정해줘야�
 
 - /src/main/resources/log4j.xml 하단  Root Logger <priority value=""/> 부분 warn, info, debug 각 값에 따라 로깅 레벨이 달라진다.
 
-- spring security SavedRequestAwareAuthenticationSuccessHandler- Using default Url: /
+- spring security SavedRequestAwareAuthenticationSuccessHandler- Using default Url: /<br>
 스프링 시큐리티는 핸들러를 따로 만들어 두지 않는다면 기본적으로 로그인 후처리를
 SavedRequestAwareAuthenticationSuccessHandler 가 맡는다.
 사용자가 원래 보려고 했던 페이지의 정보를 유지해서 로그인 후에 다시 원했던 페이지로 이동한다.
 예를들면 로그인 하지 않은채 글작성을 시도할시 이를 이용해 로그인페이지로 가서 로그인후 다시 글작성 페이지로 돌아오는식이다.
 일반 로그인 시에는 로그인 전용 핸들러를 만들어 경로를 지정해주자. 
 
-- uncaught referenceError: $ajax is not defined
+- uncaught referenceError: $.ajax is not defined <br>
 js파일에서 에러가 나서 크롬 콘솔창을 통해 확인하니 오타가 있었다. 오타를 제대로 고치고
 페이지에 재접속했지만 동일한 에러가 났다. 페이지에서 js파일을 적용한 script 태그를
 ~~~
