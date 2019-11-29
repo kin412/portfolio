@@ -700,6 +700,7 @@ src 뒤에 ?ver=1를 붙여 해결. 간혹가다 스크립트 파일이 갱신�
 ~~~jsp
 <button onclick="location.href='/signUp.jsp'">
 ~~~
+view resolver가 존재하기 때문에 위는 잘못된 경로지정.
 ~~~jsp
 <button onclick="location.href='/signUp'">
 ~~~
