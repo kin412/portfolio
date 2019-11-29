@@ -711,7 +711,7 @@ public void signUp(){}
 ~~~
 이동한 뒤 viewresolver에 의해 WEB-INF/views/signUp.jsp가 되어 이동
 	
-- 회원가입 스프링 시큐리티 ajax  문제
+- 회원가입 스프링 시큐리티 ajax  문제 <br>
 스프링 시큐리티가 적용 되었을때 ajax로 데이터를 전송하는 경우 반드시 csrf토큰값을 헤더정보에 추가해 보내야 한다.
 
 - ajax 사용시 dataType:json을 지정해 주지 않아서 xml로 데이터가 넘어와 제대로 로직을 타지않아 헤맸음
